@@ -1,31 +1,24 @@
 import mongoose from "mongoose";
 
-const mongodbUrl = process.env.MONGODB_URL;
+let cached = (global as any).mongoose || { conn: null, promise: null };
 
-if (!mongodbUrl) {
-  throw new Error("db error");
-}
-
-let cached = global.mongoose;
-if (!cached) {
-  cached = global.mongoose = { conn: null, promise: null };
-}
-
-const connectDb = async () => {
+export default async function connectDb() {
   if (cached.conn) {
     return cached.conn;
   }
 
   if (!cached.promise) {
-    cached.promise = mongoose.connect(mongodbUrl).then((conn) => conn.connection);
+    if (!process.env.MONGODB_URL) {
+      throw new Error("MONGODB_URL is missing in .env");
+    }
+
+    cached.promise = mongoose.connect(process.env.MONGODB_URL, {
+      dbName: "nextjs-app",
+    }).then((mongoose) => mongoose);
   }
 
-  try {
-    const conn = await cached.promise;
-    return conn;
-  } catch (error) {
-    console.log(error);
-  }
-};
+  cached.conn = await cached.promise;
+  (global as any).mongoose = cached;
 
-export default connectDb;
+  return cached.conn;
+}
