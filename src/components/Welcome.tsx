@@ -15,11 +15,13 @@ function Welcome() {
         y:0
       }}
       transition={{
-        duration:2
+        duration:1
       }}
+      className='flex item-center gap-3'
       >
+        <ShoppingBasket className='w-10 h-10 text-green-600' />
         <h1 className='text-4xl md:text-5xl font-extrabold text-green-700'>SnapKart</h1>
-        <ShoppingBasket />
+        
         </motion.div>
       </div>
   )
