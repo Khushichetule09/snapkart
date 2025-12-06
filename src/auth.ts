@@ -13,7 +13,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         if (!email || !password) {
           throw new Error("Missing email or password");
         }
-
+ 
         const user = await User.findOne({ email });
         if (!user) {
           throw new Error("User does not exist");
