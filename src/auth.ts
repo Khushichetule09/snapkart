@@ -7,7 +7,7 @@ import bcrypt from "bcryptjs";
 export const { handlers, signIn, signOut, auth } = NextAuth({
   providers: [
     Credentials({
-      async authorize({ email, password }) {
+      async authorize({ email, password }) { 
         await connectDb();
 
         if (!email || !password) {
