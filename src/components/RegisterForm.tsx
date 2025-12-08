@@ -27,6 +27,7 @@ function RegisterForm({ previousStep }: propType) {
       const result = await axios.post("/api/auth/register", {
         name, email, password
       })
+      router.push("/login")
       console.log(result.data)
       setLoading(false)
       alert("User registered successfully!") // ✅ Optional success alert
@@ -125,13 +126,14 @@ function RegisterForm({ previousStep }: propType) {
           OR
           <span className='flex-1 h-px bg-gray-400'></span>
         </div>
-
-        <button className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200' onClick={()=>signIn("google")}>
+        <div className='w-full flex items-center justify-center gap-3 border border-gray-300 hover:bg-gray-50 py-3 rounded-xl text-gray-700 font-medium transition-all duration-200' onClick={()=>signIn("google",{callbackUrl:"/"})}>
           <Image src={googleImage} width={20} height={20} alt='google' />
           Continue with Google
-        </button>
+        </div>
 
-      </motion.form>
+       </motion.form>
+      
+
 
       <p className='cursor-pointer text-gray-600 mt-6 text-sm flex items-center gap-1'onClick={()=>router.push("/login")}>
         Already have an account ?
