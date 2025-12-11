@@ -1,4 +1,5 @@
 import { auth } from '@/auth'
+import EditRoleMobile from '@/components/EditRoleMobile'
 import connectDb from '@/lib/db'
 import User from '@/models/user.model'
 import { redirect } from 'next/navigation'
@@ -12,7 +13,10 @@ if(!user){
   redirect("/login")
 }
 
-const inComplete=!user.mobile || !user.role || (!user.mobile && user.role)
+const inComplete=!user.mobile || !user.role || (!user.mobile && user.role=="user")
+if(inComplete){
+return <EditRoleMobile/>
+}
 
   return (
     <div>
