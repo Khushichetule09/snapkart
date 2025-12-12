@@ -3,26 +3,31 @@ import EditRoleMobile from '@/components/EditRoleMobile'
 import connectDb from '@/lib/db'
 import User from '@/models/user.model'
 import { redirect } from 'next/navigation'
-import React from  'react'
+import React from 'react'
 
- async function Home() {
+export default async function Home() {
   await connectDb()
-  const session=await auth()
-const user=await User.findById(session?.user?.id)
-if(!user){
-  redirect("/login")
-}
+  const session = await auth()
 
-const inComplete=!user.mobile || !user.role || (!user.mobile && user.role=="user")
-if(inComplete){
-return <EditRoleMobile/>
-}
+  // ⭐ EMAIL SE SEARCH KARO
+  const user = await User.findOne({ email: session?.user?.email })
+
+  if (!user) {
+    redirect("/login")
+  }
+
+  const inComplete =
+    !user.mobile ||
+    !user.role ||
+    (!user.mobile && user.role === "user")
+
+  if (inComplete) {
+    return <EditRoleMobile />
+  }
 
   return (
-    <div>
-
-    </div>
+    <>
+      
+    </>
   )
 }
-
-export default Home
